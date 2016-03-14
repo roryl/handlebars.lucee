@@ -3,7 +3,7 @@ An implementation of the Handlebars.js templating language in Lucee
 
 ###Requirements
 * Built for and tested with Lucee 4.5+
-* Requires the presence of rhino-1.7R4.jar on the *Servlet Container class path* Because of the way the underlying Handlebars.java class instantiates Rhino, Lucee cannot dynamically load this jar, and it cannot be in the Railo Server or Web Contexts.
+* Requires the presence of rhino-1.7R4.jar on the *Servlet Container class path*. Because of the way the underlying Handlebars.java class instantiates Rhino, Lucee cannot dynamically load this jar, and it cannot be in the Railo Server or Web Contexts.
 
 ###Installation
 The first time you instantiate the Handlebars.cfc, it will try to install the Rhino jar files and will throw an error prompting you to restart your Lucee instance to continue.
