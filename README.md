@@ -1,5 +1,12 @@
 # Handlebars.lucee
-An implementation of the Handlebars.js templating language in Lucee
+An implementation of the Handlebars.js templating language in Lucee. Handlebars is a logic-less templating language and implements the language as defined by [Handlebars.js](http://handlebarsjs.com/)
+
+This documentation will not go into specifics of the Handlebars syntax, for that see [Handlebars.js](http://handlebarsjs.com/)
+
+Handlebars.lucee is a thin wrapper around [Handlebars.java](https://github.com/jknack/handlebars.java). For advanced usage and difference between Javascript Handlebars.js and Handlebars.lucee, read [their documentation](https://github.com/jknack/handlebars.java)
+
+##Why Handlebars.lucee?
+
 
 ###Requirements
 * Built for and tested with Lucee 4.5+
