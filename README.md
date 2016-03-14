@@ -9,5 +9,6 @@ An implementation of the Handlebars.js templating language in Lucee
 The first time you instantiate the Handlebars.cfc, it will try to install the Rhino jar files and will throw an error prompting you to restart your Lucee instance.
 
 ```coldfusion
+//With throw an error if install was successful or failed
 Handlebars = new Handlebars();
 ```
