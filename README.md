@@ -45,6 +45,38 @@ echo(myTemplate("there")); //outputs Hello there!
 </cfscript>
 ```
 
+###Compiling Template Files
+Handlebars.lucee can read template files and compile them. Consider this template
+
+helloworld.hbs
+```handlebars
+Hello {{this}}!
+```
+
+Then by passing the fully qualified path to the template to handlebars compile() function, it acheives the same result as compileInLine()
+
+```coldfusion
+<cfscript>
+myTemplate = new Handlebars().compile(expandPath("helloworld.hbs"));
+echo(myTemplate("world")); //outputs Hello world!
+echo(myTemplate("Jim")); //outputs Hello Jim!
+echo(myTemplate("there")); //outputs Hello there!
+</cfscript>
+```
+
+In the current implementation of Handlebars.lucee, you must provide the full path to the file, relative paths are not allowed
+
+###Lucee Custom Tag
+The Handlebars.cfc file shipped with this repository is also a Lucee custom tag. Drop Handlebars.cfc into a customtag path to use it. With this usage method, the template file is put into the tag body. The data for the output is passed via the context argument, and it can be a string, array or struct.
+
+myTemplate.cfm
+```coldfusion
+<cf_handlebars context="world">
+Hello {{this}}!
+</cf_handlebars>
+```
+
+Use this method for replacing Lucee .cfm templates with handlebar templates and not interferring with any existing view framework that may be in use.
 
 
 ##Requirements
