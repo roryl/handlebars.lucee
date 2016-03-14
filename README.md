@@ -81,7 +81,7 @@ Use this method for replacing Lucee .cfm templates with handlebar templates and 
 ###Helpers
 Handlebars.lucee can execute javascript helpers just like Handlebars.js. See the [Helpers documentation](http://handlebarsjs.com/block_helpers.html)
 
-Handlebars.lucee takes care of registering the helper so that it is available for use in the template. Currently, it looks for helpers in the helpers folder of your Handlebars.lucee installation.
+Handlebars.lucee takes care of registering the helper so that it is available for use in the template. Currently, it looks for helpers in the `helpers` folder of your Handlebars.lucee installation.
 
 Because these helpers are executed with Rhino 1.7, they will not have the full capabilities of a modern Javascript browser (and particularly, no jquery support). Its recommended to keep the helpers simple, using vanilla JS.
 
