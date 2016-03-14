@@ -15,6 +15,37 @@ By using Handlebars.lucee, an application can render output on the server using 
 ###Easier for Designers
 Because Handlebars templates don't contain any Lucee tags or functions, a designer doesn't need to know anything about Lucee to read the templates. The basic boolean logic is simply enough for anyone to understand.
 
+##Usage
+This documentationa assumes you are familiar with Handlebars or Mustache style templates and will not go into all of the uses. We recommend learning [Handlebars.js](http://handlebarsjs.com/) 
+
+There are three methods to use Handlebars.lucee
+
+1. Compiling Inline Templates
+2. Compiling Template Files
+3. Lucee Custom Tag
+
+###Compiling Inline Templates
+The following example will output a hello world:
+```coldfusion
+<cfscript>
+myTemplate = new Handlebars().compileInLine("Hello {{this}}!");
+echo(myTemplate("world")); //outputs Hello world!
+</cfscript>
+```
+
+The compileInLine function takes a text string that is a valid handlebars template and returns a Closure in which the compiled template can be used. Handlebars.lucee follows the Handlebars.js convention in that compiling a template creates a function which can be further called. This means that you only need to compile once for all invocations of that template in the request, and you could even cache the compilation result. 
+
+This example below compiles once, but outputs three different words
+```coldfusion
+<cfscript>
+myTemplate = new Handlebars().compileInLine("Hello {{this}}!");
+echo(myTemplate("world")); //outputs Hello world!
+echo(myTemplate("Jim")); //outputs Hello Jim!
+echo(myTemplate("there")); //outputs Hello there!
+</cfscript>
+```
+
+
 
 ##Requirements
 * Built for and tested with Lucee 4.5+
