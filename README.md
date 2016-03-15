@@ -141,7 +141,7 @@ Handlebars.install(); //attemptes the installation
 ###Manual Jar Installation
 If Handlebars.lucee cannot finish the installation, or is returning the error "Rhino isn't on the classpath", copy the file java/rhino-1.7R4.jar from this repository to the servlet container jar library. The other Java files do not need to be copied, they are loaded dynamically by Lucee without issue.
 
-####CommandBox Servler Container Library
+####CommandBox Servlet Container Library
 On windows, put the rhino-1.7R4.jar file here:
 C:\Users\{your-user}\.CommandBox\lib
 
