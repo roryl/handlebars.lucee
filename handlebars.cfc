@@ -1,6 +1,6 @@
 /**
 *
-* @author Rory Laitila
+* @author Copyright (c) Rory Laitila
 * @description Handlebars.lucee implements the Handlebars.js templating language via the Handlebars.java library.
 * this is a wrapper around the Handlebars.java library. See https://github.com/jknack/handlebars.java for advanced usages
 *
