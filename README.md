@@ -143,6 +143,8 @@ On windows, put the rhino-1.7R4.jar file here:
 C:\Users\{your-user}\.CommandBox\lib
 
 ####Lucee Linux
+Put the rhino-1.7R4.jar here: /opt/lucee/lib
+
 
 
 
