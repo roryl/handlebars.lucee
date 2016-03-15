@@ -110,7 +110,7 @@ box> `install https://github.com/roryl/handlebars.lucee/archive/master.zip --pro
 ###Contributing / Development
 Download the repository and run it from a webroot. CommandBox will not install the unit test file, so you must download the repository. 
 
-Execute the unit test by going in your browser running your development server {your domain name}/handlebarsTest.cfc?method=runremote
+Execute the unit test by going in your browser running your development server `{your domain name}/handlebarsTest.cfc?method=runremote`
 
 ###Automatic Jar Installation
 The first time Handlebars.cfc is instantiated, it will try to install the Rhino jar files and will throw an error prompting to restart the Lucee instance to continue. This only needs to be done once.
