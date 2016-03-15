@@ -12,7 +12,7 @@ component output="false" displayname="" accessors="true"  {
 	property name="cacheKey" default="handlebars.lucee";
 	property name="helperPath" default="helpers";
 
-	public function init(){
+	public Handlebars function init(){
 
 		var config = deserializeJson(fileRead("config.json"));
 		variables.useCache = config.useCache;
@@ -23,7 +23,7 @@ component output="false" displayname="" accessors="true"  {
 			install();
 			throw("Handlebars.lucee has been installed, you must restart Lucee for this to take effect");
 		}
-
+		return this;
 	}
 
 
@@ -36,7 +36,7 @@ component output="false" displayname="" accessors="true"  {
 	 * compile - compiles a file
 	 * 
 	 ***************************************************************/
- 	public function compileInLine(required string template){
+ 	public string function compileInLine(required string template){
  		var template = getJava().compileInLine(arguments.template);
  		var result = function(context){
  			var result = template.apply(arguments.context);
@@ -45,7 +45,7 @@ component output="false" displayname="" accessors="true"  {
  		return result;
  	}
 
- 	public function compile(required string templatePath){
+ 	public closure function compile(required string templatePath){
 
  		var templatePath = arguments.templatePath;
  		if(!fileExists(templatePath)){
@@ -57,7 +57,7 @@ component output="false" displayname="" accessors="true"  {
  		return template;
  	}
 
- 	public function getJava(){
+ 	public object function getJava(){
 
 		if(handlebarsIsCached()){
 			return cacheGetHandlebars();
@@ -79,7 +79,7 @@ component output="false" displayname="" accessors="true"  {
 		}		
 	}
 
-	public function install(){		
+	public void function install(){		
 		try {
 			var servletPath = getServletContainerPath() & "/rhino-1.7R4.jar";
 			var rhinoPath = expandPath("java/rhino-1.7R4.jar");
@@ -91,7 +91,7 @@ component output="false" displayname="" accessors="true"  {
 		}
 	}
 
-	public function cacheClear(){
+	public void function cacheClear(){
 		if(handlebarsIsCached()){
 			structDelete(application, getCacheKey());
 		}
@@ -106,7 +106,7 @@ component output="false" displayname="" accessors="true"  {
 	 * PRIVATE METHODS  
 	 ********************************************************************/
 
-	private function getHelperPath(){
+	private string function getHelperPath(){
 		return variables.helperPath;
 	}
 
@@ -118,12 +118,12 @@ component output="false" displayname="" accessors="true"  {
 		}
 	}
 
-	private function cacheHandlebars(required Object Handlebars){
+	private void function cacheHandlebars(required Object Handlebars){
 		application[getCacheKey()] = arguments.handlebars;
 	}
 	
 
-	private function newHandlebars(){
+	private object function newHandlebars(){
 
 		Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars','java/handlebars-4.0.3.jar,java/commons-lang3-3.1.jar,java/antlr4-runtime-4.5.1-1.jar,java/rhino-1.7R4.jar').init();
 
@@ -140,7 +140,7 @@ component output="false" displayname="" accessors="true"  {
 		return Handlebars;
 	}
 
-	private function getServletContainerPath(){
+	private string function getServletContainerPath(){
 
 		var path = expandPath("{lucee-server}");
 
@@ -150,13 +150,15 @@ component output="false" displayname="" accessors="true"  {
 			path = expandPath(path & "../../../../../../lib");
 		} else if (path CONTAINS "/opt/lucee"){
 			path = "/opt/lucee/lib"; //Linux tomcat location
+		} else {
+			throw("Could not find a supported servlet container, try manually installing the Rhino rhino-1.7R4.jar as described in the documentation");
 		}
 
 		return path;
 
 	}
 
-	private function getRhinoServletPath(){
+	private string function getRhinoServletPath(){
 		return getServletContainerPath() & "/rhino-1.7R4.jar";
 	}
 
@@ -166,10 +168,6 @@ component output="false" displayname="" accessors="true"  {
 	 * onStartTag() and onEndTag are used when handlebars is invoked as a customtag
 	 *********************************************************************/
 
-	/**
-	 * 
-	 * @return {[type]} [description]
-	 */
 	function onStartTag(){
 
 	}
