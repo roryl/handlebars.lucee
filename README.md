@@ -98,17 +98,25 @@ Handlebars.lucee is a simple wrapper around the Handlebars.java class. Get acces
 * Built for and tested with Lucee 4.5+
 * Requires the presence of rhino-1.7R4.jar on the *Servlet Container class path* (NOT the Lucee Web Context or Server Conext lib folders, it will not work from there). Because of the way the underlying Handlebars.java class instantiates Rhino, Lucee cannot dynamically load this jar, and it cannot be in the Railo Server or Web Contexts.
 
-##Automatic Installation
+##Installation
+To use Handlebars.lucee, download this repository and place in a location where your application can path to Handlebars.cfc
+
+This repository is also a CommandBox package, and can be installed using CommandBox
+
+`install 
+
+
+###Automatic Jar Installation
 The first time Handlebars.cfc is instantiated, it will try to install the Rhino jar files and will throw an error prompting to restart the Lucee instance to continue. This only needs to be done once.
 
-###Supported Servlet Containers
+####Supported Servlet Containers
 The automatic installation has only been tested with the following Lucee installations
 * via CommandBox on Windows
 * via Lucee Tomcat Linux distribution
 
-If automatic installation is failing or Lucee is not deployed on one of the above installations, try the [manual installation[(#manual-installation) described later in the readme. 
+If automatic installation is failing or Lucee is not deployed on one of the above installations, try the [manual installation[(#manual-jar-installation) described later in the readme. 
 
-###Example for calling the automatic installation
+####Example for calling the automatic installation
 ```coldfusion
 //With throw installed and needs restart, or was failed
 Handlebars = new Handlebars();
@@ -122,5 +130,5 @@ writeDump(Handlebars.isInstalled()); //returns true or false if it can fine Rhin
 Handlebars.install(); //attemptes the installation
 ```
 
-##Manual Installation
+###Manual Jar Installation
 If Handlebars.lucee cannot finish the installation, copy the file java/rhino-1.7R4.jar from this repository to the servlet container jar library. The other Java files do not need to be copied, they are loaded dynamically by Lucee without issue.
