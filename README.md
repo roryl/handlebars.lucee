@@ -122,7 +122,7 @@ The automatic installation has only been tested with the following Lucee install
 * via CommandBox on Windows
 * via Lucee Tomcat Linux distribution
 
-If one of these two installations is not found, en error will be thrown `Could not find a supported servlet container, try manually installing the Rhino rhino-1.7R4.jar as described in the documentation`
+If one of these two installations is not found, an error will be thrown `Could not find a supported servlet container, try manually installing the Rhino rhino-1.7R4.jar as described in the documentation`
 
 If automatic installation is failing or Lucee is not deployed on one of the above installations, try the [manual installation](#manual-jar-installation) described later in the readme. 
 
