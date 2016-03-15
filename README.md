@@ -73,7 +73,7 @@ In the current implementation of Handlebars.lucee, you must provide the full pat
 The file extension of the handlebars template can be anything, but .hbs is the conventional extension.
 
 ###Lucee Custom Tag
-The Handlebars.cfc file shipped with this repository is also a Lucee custom tag. Drop Handlebars.cfc into a customtag path to use it. With this usage method, the handlebars template is put into the tag body. The data for the output is passed via the context argument, and it can be a string, array or struct.
+The Handlebars.cfc file shipped with this repository is also a Lucee custom tag. Drop this repository into a customtag path that can find Handlebars.cfc to use it. With this usage method, the handlebars template is put into the tag body. The data for the output is passed via the context argument, and it can be a string, array or struct.
 
 myTemplate.cfm
 ```coldfusion
