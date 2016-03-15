@@ -53,7 +53,8 @@
     "ignore":[
         "**/.*",
         "test",
-        "tests"
+        "tests",
+        "logo.fw.png"
     ],
     "testbox":{
         "runner":[

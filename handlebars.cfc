@@ -71,7 +71,7 @@ component output="false" displayname="" accessors="true"  {
  	 ****************************************************************/
 
 	public boolean function isInstalled(){
-		
+
 		if(fileExists(getRhinoServletPath())){
 			return true;
 		} else {
@@ -83,7 +83,7 @@ component output="false" displayname="" accessors="true"  {
 		try {
 			var servletPath = getServletContainerPath() & "/rhino-1.7R4.jar";
 			var rhinoPath = expandPath("java/rhino-1.7R4.jar");
-			fileCopy(servletPath, rhinoPath);			
+			fileCopy(rhinoPath, servletPath);			
 		} catch (any e){
 			throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
 			writeDump(e);
@@ -148,6 +148,8 @@ component output="false" displayname="" accessors="true"  {
 			//Server context is at something like C:\Users\Rory\.CommandBox\engine\cfml\server\lucee-server\context
 			//We need to go 5 directories up to get to the path to copy the rhino jar
 			path = expandPath(path & "../../../../../../lib");
+		} else if (path CONTAINS "/opt/lucee"){
+			path = "/opt/lucee/lib"; //Linux tomcat location
 		}
 
 		return path;
