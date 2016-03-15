@@ -103,8 +103,11 @@ To use Handlebars.lucee, download this repository and place in a location where 
 
 This repository is also a CommandBox package, and can be installed using CommandBox
 
-`install 
+For production use (will skip testobx)
+box> `install https://github.com/roryl/handlebars.lucee/archive/master.zip --production`
 
+For running the Handlebars.lucee unit tests (will install testbox)
+box> `install https://github.com/roryl/handlebars.lucee/archive/master.zip --production`
 
 ###Automatic Jar Installation
 The first time Handlebars.cfc is instantiated, it will try to install the Rhino jar files and will throw an error prompting to restart the Lucee instance to continue. This only needs to be done once.
