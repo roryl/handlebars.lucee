@@ -1,3 +1,5 @@
+![Lucee Handlebars Logo](https://raw.githubusercontent.com/https://github.com/roryl/handlebars.lucee/master/logo.fw.png)
+
 # Handlebars.lucee
 An implementation of the Handlebars.js templating language in [Lucee](http://lucee.org/). Handlebars is a logic-less templating language and implements the language as defined by [Handlebars.js](http://handlebarsjs.com/)
 
