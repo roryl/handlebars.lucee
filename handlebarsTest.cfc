@@ -66,7 +66,7 @@ component extends="testbox.system.BaseSpec"{
 	function compileUseTwiceTest(){
 		myTemplate = Handlebars.compile(expandPath("templates/helloWorld.hbs"));		
 		expect(myTemplate("world")).toBe("Hello world!");
-		expect(myTemplate("world")).toBe("Hello world!");		
+		expect(myTemplate("jim")).toBe("Hello jim!");		
 	}
 	
 

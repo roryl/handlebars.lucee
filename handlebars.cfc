@@ -36,7 +36,7 @@ component output="false" displayname="" accessors="true"  {
 	 * compile - compiles a file
 	 * 
 	 ***************************************************************/
- 	public string function compileInLine(required string template){
+ 	public any function compileInLine(required string template){
  		var template = getJava().compileInLine(arguments.template);
  		var result = function(context){
  			var result = template.apply(arguments.context);
@@ -45,7 +45,7 @@ component output="false" displayname="" accessors="true"  {
  		return result;
  	}
 
- 	public closure function compile(required string templatePath){
+ 	public any function compile(required string templatePath){
 
  		var templatePath = arguments.templatePath;
  		if(!fileExists(templatePath)){

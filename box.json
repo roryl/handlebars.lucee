@@ -1,16 +1,16 @@
 {
     "name":"handlebarslucee",
     "version":"0.0.0",
-    "author":"",
+    "author":"Rory Laitila",
     "location":"",
     "directory":"",
     "createPackageDirectory":true,
     "packageDirectory":"",
-    "homepage":"",
+    "homepage":"https://github.com/roryl/handlebars.lucee",
     "documentation":"",
     "repository":{
-        "type":"",
-        "URL":""
+        "type":"git",
+        "URL":"https://github.com/roryl/handlebars.lucee"
     },
     "bugs":"",
     "slug":"handlebarslucee",
@@ -26,7 +26,7 @@
     "engines":[
         {
             "type":"",
-            "version":""
+            "version":"1.0.0+1"
         }
     ],
     "defaultEngine":"",
