@@ -73,7 +73,7 @@ In the current implementation of Handlebars.lucee, you must provide the full pat
 The file extension of the handlebars template can be anything, but .hbs is the conventional extension.
 
 ###Lucee Custom Tag
-The Handlebars.cfc file shipped with this repository is also a Lucee custom tag. Drop Handlebars.cfc into a customtag path to use it. With this usage method, the handlebars template is put into the tag body. The data for the output is passed via the context argument, and it can be a string, array or struct.
+The Handlebars.cfc file shipped with this repository is also a Lucee custom tag. Drop this repository into a customtag path that can find Handlebars.cfc to use it. With this usage method, the handlebars template is put into the tag body. The data for the output is passed via the context argument, and it can be a string, array or struct.
 
 myTemplate.cfm
 ```coldfusion
@@ -122,7 +122,7 @@ The automatic installation has only been tested with the following Lucee install
 * via CommandBox on Windows
 * via Lucee Tomcat Linux distribution
 
-If one of these two installations is not found, en error will be thrown `Could not find a supported servlet container, try manually installing the Rhino rhino-1.7R4.jar as described in the documentation`
+If one of these two installations is not found, an error will be thrown `Could not find a supported servlet container, try manually installing the Rhino rhino-1.7R4.jar as described in the documentation`
 
 If automatic installation is failing or Lucee is not deployed on one of the above installations, try the [manual installation](#manual-jar-installation) described later in the readme. 
 
