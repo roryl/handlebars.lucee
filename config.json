@@ -1,5 +1,6 @@
 {
 	"useCache":true,
 	"cacheKey":"handlebarslucee",
-	"helperPath":"helpers"
+	"helperPath":"helpers",
+	"manualInstall":false
 }

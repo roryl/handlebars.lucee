@@ -18,6 +18,7 @@ component output="false" displayname="" accessors="true"  {
 		variables.useCache = config.useCache;
 		variables.cacheKey = config.cacheKey;
 		variables.helperPath = config.helperPath;
+		variables.manualInstall = config.manualInstall;
 
 		if(!isInstalled()){
 			install();
@@ -72,6 +73,10 @@ component output="false" displayname="" accessors="true"  {
 
 	public boolean function isInstalled(){
 
+		if(variables.manualInstall){
+			return true;
+		}
+
 		if(fileExists(getRhinoServletPath())){
 			return true;
 		} else {
@@ -81,9 +86,10 @@ component output="false" displayname="" accessors="true"  {
 
 	public void function install(){		
 		try {
+			
 			var servletPath = getServletContainerPath() & "/rhino-1.7R4.jar";
-			var rhinoPath = expandPath("java/rhino-1.7R4.jar");
-			fileCopy(rhinoPath, servletPath);			
+			var rhinoPath = expandPath(getCurrentTemplatePath() & "../../java/rhino-1.7R4.jar");
+			fileCopy(rhinoPath, servletPath);
 		} catch (any e){
 			throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
 			writeDump(e);
