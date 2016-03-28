@@ -12,13 +12,23 @@ component output="false" displayname="" accessors="true"  {
 	property name="cacheKey" default="handlebars.lucee";
 	property name="helperPath" default="helpers";
 
-	public Handlebars function init(){
-
-		var config = deserializeJson(fileRead("config.json"));
-		variables.useCache = config.useCache;
-		variables.cacheKey = config.cacheKey;
-		variables.helperPath = config.helperPath;
-		variables.manualInstall = config.manualInstall;
+	/**
+	 * Default constructor for Handlebars
+	 * @param  {Boolean} useCache      Flags whether to cache the creation of the underlying Handlebars.java object. Always set to true for production
+	 * @param  {String}  cacheKey      The key in the application scope scope which the Handlebars.java is cached. Override this if there are conflicts with this name
+	 * @param  {String}  helperpath    The path to find helpers in
+	 * @param  {Boolean} manualinstall Override the automatic install for systems that Handlebars.lucee is not aware of
+	 * @return {Handlebars}            An instance of the Handlebars.cfc
+	 */
+	public Handlebars function init(useCache=true, 
+									cacheKey="handlebarslucee", 
+									helperpath="helpers", 
+									manualinstall=false){
+		
+		variables.useCache = arguments.useCache;
+		variables.cacheKey = arguments.cacheKey;
+		variables.helperPath = arguments.helperPath;
+		variables.manualInstall = arguments.manualInstall;
 
 		if(!isInstalled()){
 			install();
@@ -87,7 +97,7 @@ component output="false" displayname="" accessors="true"  {
 	public void function install(){		
 		try {
 			
-			var servletPath = getServletContainerPath() & "/rhino-1.7R4.jar";
+			var servletPath = getRhinoServletPath();
 			var rhinoPath = expandPath(getCurrentTemplatePath() & "../../java/rhino-1.7R4.jar");
 			fileCopy(rhinoPath, servletPath);
 		} catch (any e){

@@ -7,6 +7,8 @@ component extends="testbox.system.BaseSpec"{
 
 	// executes before all test cases
 	function beforeTests(){
+		//Becuase custom tag classes seem to be cached, restart the Lucee instance
+		admin action="restart" type="server" password="123456";	
 	}
 
 	// executes after all test cases
@@ -14,7 +16,7 @@ component extends="testbox.system.BaseSpec"{
 	}
 
 	// executes before every test case
-	function setup( currentMethod ){
+	function setup( currentMethod ){				
 		Handlebars = new Handlebars();
 		Handlebars.cacheClear();
 	}
@@ -42,6 +44,7 @@ component extends="testbox.system.BaseSpec"{
 
 	function installTest(){
 		Handlebars.install();
+		// throw()
 	}
 
 	function getHandlebarsTest(){
@@ -82,7 +85,7 @@ component extends="testbox.system.BaseSpec"{
 				echo("Hello {{this}}!");
 			}			
 		}
-		writeDump(myOutput);
+		// writeDump(myOutput);
 
 	}
 }
