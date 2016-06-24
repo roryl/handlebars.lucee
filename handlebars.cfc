@@ -98,8 +98,11 @@ component output="false" displayname="" accessors="true"  {
 		try {
 			
 			var servletPath = getRhinoServletPath();
-			var rhinoPath = expandPath(getCurrentTemplatePath() & "../../java/rhino-1.7R4.jar");
-			fileCopy(rhinoPath, servletPath);
+            var currentPath = getCurrentTemplatePath();
+            var basePath = getDirectoryFromPath(currentPath);
+            var rhinoPath = basePath & "java/rhino-1.7R4.jar";
+            fileCopy(rhinoPath, servletPath);
+
 		} catch (any e){
 			throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
 			writeDump(e);
