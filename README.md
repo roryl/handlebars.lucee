@@ -37,7 +37,7 @@ echo(myTemplate("world")); //outputs Hello world!
 </cfscript>
 ```
 
-The compileInLine function takes a text string that is a valid handlebars template and returns a Closure from which the compiled template can be used. Handlebars.lucee follows the Handlebars.js convention in that compiling a template creates a closure function which can be further called. This means that each template only needs to be compiled once for all invocations of that template in the request, and this compipled template can cached using any of the Lucee caching mechanisms.
+The compileInLine function takes a text string that is a valid handlebars template and returns a Closure from which the compiled template can be used. Handlebars.lucee follows the Handlebars.js convention in that compiling a template creates a closure function which can be further called. This means that each template only needs to be compiled once for all invocations of that template in the request, and this compiled template can cached using any of the Lucee caching mechanisms.
 
 This example below compiles once, but outputs three different words
 ```coldfusion
