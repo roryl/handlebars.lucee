@@ -7,7 +7,7 @@
 */
 
 component output="false" displayname="" accessors="true"  {
-
+	
 	property name="useCache" default="true";
 	property name="cacheKey" default="handlebars.lucee";
 	property name="helperPath" default="helpers";
@@ -80,7 +80,6 @@ component output="false" displayname="" accessors="true"  {
  	/****************************************************************
  	 * SETUP AND CONTROL METHODS
  	 ****************************************************************/
-
 	public boolean function isInstalled(){
 
 		if(variables.manualInstall){
@@ -102,7 +101,7 @@ component output="false" displayname="" accessors="true"  {
             var basePath = getDirectoryFromPath(currentPath);
             var rhinoPath = basePath & "java/rhino-1.7R4.jar";
             fileCopy(rhinoPath, servletPath);
-
+            
 		} catch (any e){
 			throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
 			writeDump(e);
@@ -144,13 +143,13 @@ component output="false" displayname="" accessors="true"  {
 
 	private object function newHandlebars(){
 
-		Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars','java/handlebars-4.0.3.jar,java/commons-lang3-3.1.jar,java/antlr4-runtime-4.5.1-1.jar,java/rhino-1.7R4.jar').init();
+		Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars','java/handlebars-4.0.6.jar,java/commons-lang3-3.1.jar,java/antlr4-runtime-4.5.1-1.jar,java/rhino-1.7R4.jar').init();			
 
 		var helpers = directoryList(getHelperPath());
 		for(helper in helpers){
 			var jsFile = createObject("java", "java.io.File").init(helper);
 			Handlebars.registerHelpers(jsFile);			
-		}		
+		}
 
 		if(getUseCache()){
 			cacheHandlebars(Handlebars);
@@ -194,14 +193,18 @@ component output="false" displayname="" accessors="true"  {
 	function onEndTag(attributes, caller, generatedContent){
 
 		template = this.compileInline(generatedContent);
-		// var start = getTickCount();
-		// writeDump(template.apply({name:"Rory"}));
-		// writeDump(Handlebars);
-
-		// echo(output);
-		echo(template(attributes.context));
-		// var end = getTickCount();
-		// writeDump((end - start) / 1000);
-		// abort;
+		
+		if(structKeyExists(attributes,"partial")){
+			savecontent variable="template" {
+				echo('<script id="#attributes.partial#" type="text/x-handlebars-template">');
+				echo(generatedContent);
+				echo('</script>');
+			}
+			htmlhead text="#template#";
+			echo(generatedContent);
+		} else {
+			echo(template(attributes.context));
+		}
+		
 	}
 }

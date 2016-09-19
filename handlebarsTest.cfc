@@ -88,4 +88,15 @@ component extends="testbox.system.BaseSpec"{
 		// writeDump(myOutput);
 
 	}
+
+	function dateFormatTest(){
+
+		myTemplate = Handlebars.compile(expandPath("templates/dateFormat.hbs"));		
+		var context = {
+			// date: createDate("2016", "01", "05")
+			date: createDateTime("2016", "01", "05", "5", "0", "0")
+		}
+		expect(myTemplate(context)).toBe("The date is 01-05-2016");
+
+	}
 }
