@@ -97,8 +97,9 @@ The helpers are cached along with the Handlebars.java library, to flush the cach
 Handlebars.lucee is a simple wrapper around the Handlebars.java class. Get access to the instantiated handlebars.java class via the `Handlebars.getJava()` method and perform any actions possible. See the [Handlebars.java documentation](https://github.com/jknack/handlebars.java) for examples of advanced usage.
 
 ## Requirements
-* Built for and tested with Lucee 4.5+
-* Requires the presence of rhino-1.7R4.jar on the *Servlet Container class path* (NOT the Lucee Web Context or Server Conext lib folders, it will not work from there). Because of the way the underlying Handlebars.java class instantiates Rhino, Lucee cannot dynamically load this jar, and it cannot be in the Railo Server or Web Contexts.
+* Built for and tested with Lucee 4.5 and Lcuee 5.3.77+
+* For Lucee 4.5, Requires the presence of rhino-1.7R4.jar on the *Servlet Container class path* (NOT the Lucee Web Context or Server Conext lib folders, it will not work from there). Because of the way the underlying Handlebars.java class instantiates Rhino, Lucee cannot dynamically load this jar, and it cannot be in the Railo Server or Web Contexts.
+* For Lucee 5.3.77+, we cannot use the same method as Lucee 4.5. Instead, Rhino, Handlebars.java and all necessary supporting java libraries are packaged into an OSGI bundle and deployed to the Lucee 5 bundles directory.
 
 ## Installation
 To use Handlebars.lucee, download this repository and place in a location where your application can path to Handlebars.cfc
@@ -115,9 +116,17 @@ Download the repository and run it from a webroot. CommandBox will not install t
 Execute the unit test by going `{your domain name}/handlebarsTest.cfc?method=runremote` or whatever webroot you have installed Handlebars.lucee into
 
 ### Automatic Jar Installation
+
+#### Lucee 4.5
+
 The first time Handlebars.cfc is instantiated, it will try to install the Rhino jar files and will throw an error prompting to restart the Lucee instance to continue. This only needs to be done once. You must restart the servlet container (Tomcat, CommandBox) and not merely a Lucee Web Context.
 
-#### Supported Servlet Containers
+#### Lucee 5.3.2+
+
+The first time Handlebars.cfc is instantiated, it will try to install the OSGI bundle and should not need a restart to complete.
+
+#### Supported Servlet Containers on Lucee 4.5
+
 The automatic installation has only been tested with the following Lucee installations
 * via CommandBox on Windows
 * via Lucee Tomcat Linux distribution
@@ -140,15 +149,16 @@ writeDump(Handlebars.isInstalled()); //returns true or false if it can find Rhin
 Handlebars.install(); //attemptes the installation
 ```
 
-### Manual Jar Installation
+### Manual Jar Installation on Lucee 4.5
+
 If Handlebars.lucee cannot finish the installation, or is returning the error "Rhino isn't on the classpath", copy the file java/rhino-1.7R4.jar from this repository to the servlet container jar library. The other jar files in the Handlebars.lucee java/ folder do not need to be copied, they are loaded dynamically by Lucee without issue.
 
-#### CommandBox Servlet Container Library Directory
+#### CommandBox Servlet Container Library Directory for Lucee 4.5
 On windows, put the rhino-1.7R4.jar file here:
 
 `C:\Users\{your-user}\.CommandBox\lib`
 
-#### Lucee Linux Container Library Directory
+#### Lucee Linux Container Library Directory for Lucee 4.5
 Put the rhino-1.7R4.jar here:
 
 `/opt/lucee/lib`
