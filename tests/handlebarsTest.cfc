@@ -2,14 +2,11 @@
 * My xUnit Test
 */
 component extends="testbox.system.BaseSpec"{
-
+	
 /*********************************** LIFE CYCLE Methods ***********************************/
 
 	// executes before all test cases
 	function beforeTests(){
-		//Becuase custom tag classes seem to be cached, restart the Lucee instance
-		// admin action="restart" type="server" password="123456";
-
 	}
 
 	// executes after all test cases
@@ -27,9 +24,10 @@ component extends="testbox.system.BaseSpec"{
 	}
 
 /*********************************** TEST CASES BELOW ***********************************/
-
+	
 	// Remember that test cases MUST start or end with the keyword 'test'
 	function isInstalledTest(){
+		
 		expect(Handlebars.isInstalled()).toBe(true);
 		// writeDump(expandPath("{lucee-server}"));
 
@@ -44,7 +42,6 @@ component extends="testbox.system.BaseSpec"{
 
 	function installTest(){
 		Handlebars.install();
-		// throw()
 	}
 
 	function getHandlebarsTest(){
@@ -52,7 +49,7 @@ component extends="testbox.system.BaseSpec"{
 		var java = Handlebars.getJava();
 		expect(java.getClass().getName() contains "com.github.jknack.handlebars.Handlebars").toBeTrue();
 	}
-
+	
 	function compileInLineTest(){
 
 		var data = "Hello";
@@ -62,20 +59,20 @@ component extends="testbox.system.BaseSpec"{
 	}
 
 	function compileTest(){
-		myTemplate = Handlebars.compile(expandPath("templates/helloWorld.hbs"));
+		myTemplate = Handlebars.compile(expandPath("templates/helloWorld.hbs"));		
 		expect(myTemplate("world")).toBe("Hello world!");
 	}
 
 	function compileUseTwiceTest(){
-		myTemplate = Handlebars.compile(expandPath("templates/helloWorld.hbs"));
+		myTemplate = Handlebars.compile(expandPath("templates/helloWorld.hbs"));		
 		expect(myTemplate("world")).toBe("Hello world!");
-		expect(myTemplate("jim")).toBe("Hello jim!");
+		expect(myTemplate("jim")).toBe("Hello jim!");		
 	}
-
+	
 
 	function compileFileNotFoundTest(){
 		expect(function(){Handlebars.compile(expandPath("templates/helloWorld1.hbs")); }).toThrow();
-		// myTemplate =
+		// myTemplate = 	
 	}
 
 	function customTagTest(){
@@ -83,7 +80,7 @@ component extends="testbox.system.BaseSpec"{
 		savecontent variable="myOutput" {
 			module template="handlebars.cfc" context="world" {
 				echo("Hello {{this}}!");
-			}
+			}			
 		}
 		// writeDump(myOutput);
 

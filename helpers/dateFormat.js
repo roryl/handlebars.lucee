@@ -32,7 +32,7 @@ Handlebars.registerHelper('dateFormat', function(context, options) {
 		}
 		return zeros + value;
 	};
-	
+
 	return mask.replace(/"[^"]*"|'[^']*'|\b(?:d{1,4}|m{1,4}|yy(?:yy)?|([hHMstT])\1?|[lLZ])\b/g, function($0) {
 		switch($0) {
 			case 'd':		return d.getDate();

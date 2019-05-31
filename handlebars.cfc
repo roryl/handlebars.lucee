@@ -7,7 +7,7 @@
 */
 
 component output="false" displayname="" accessors="true"  {
-	
+
 	property name="useCache" default="true";
 	property name="cacheKey" default="handlebars.lucee";
 	property name="helperPath" default="helpers";
@@ -20,11 +20,11 @@ component output="false" displayname="" accessors="true"  {
 	 * @param  {Boolean} manualinstall Override the automatic install for systems that Handlebars.lucee is not aware of
 	 * @return {Handlebars}            An instance of the Handlebars.cfc
 	 */
-	public Handlebars function init(useCache=true, 
-									cacheKey="handlebarslucee", 
-									helperpath="helpers", 
+	public Handlebars function init(useCache=false,
+									cacheKey="handlebarslucee",
+									helperpath="helpers",
 									manualinstall=false){
-		
+
 		variables.useCache = arguments.useCache;
 		variables.cacheKey = arguments.cacheKey;
 		variables.helperPath = arguments.helperPath;
@@ -32,7 +32,10 @@ component output="false" displayname="" accessors="true"  {
 
 		if(!isInstalled()){
 			install();
-			throw("Handlebars.lucee has been installed, you must restart Lucee for this to take effect");
+			if(server.lucee.version < 5){
+				//only Lucee 4x needs to be restarted, Lucee 5 will work without a restart
+				throw("Handlebars.lucee has been installed, you must restart Lucee for this to take effect");
+			}
 		}
 		return this;
 	}
@@ -45,10 +48,18 @@ component output="false" displayname="" accessors="true"  {
 	 *
 	 * compileInLine - Compiles a handlebars template string
 	 * compile - compiles a file
-	 * 
+	 *
 	 ***************************************************************/
  	public any function compileInLine(required string template){
- 		var template = getJava().compileInLine(arguments.template);
+
+ 		var hash = hash(template);
+ 		if(application.keyExists(hash)){
+ 			var template = application[hash];
+ 		} else {
+ 			var template = getJava().compileInLine(arguments.template);
+ 			application[hash] = template;
+ 		}
+
  		var result = function(context){
  			var result = template.apply(arguments.context);
  			return result;
@@ -64,7 +75,7 @@ component output="false" displayname="" accessors="true"  {
  		}
 
  		var templateSource = fileRead(arguments.templatePath);
- 		var template = compileInLine(templateSource); 		
+ 		var template = compileInLine(templateSource);
  		return template;
  	}
 
@@ -74,46 +85,77 @@ component output="false" displayname="" accessors="true"  {
 			return cacheGetHandlebars();
 		} else {
 			return newHandlebars();
-		}		
+		}
 	}
 
  	/****************************************************************
  	 * SETUP AND CONTROL METHODS
  	 ****************************************************************/
+
 	public boolean function isInstalled(){
 
 		if(variables.manualInstall){
 			return true;
 		}
 
-		if(fileExists(getRhinoServletPath())){
-			return true;
-		} else {
-			return false;
-		}		
+		if(server.lucee.version >= 5){
+			if(fileExists(getOsgiBundlePath())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		else {
+			if(fileExists(getRhinoServletPath())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 	}
 
-	public void function install(){		
-		try {
-			
-			var servletPath = getRhinoServletPath();
-            var currentPath = getCurrentTemplatePath();
-            var basePath = getDirectoryFromPath(currentPath);
-            var rhinoPath = basePath & "java/rhino-1.7R4.jar";
-            fileCopy(rhinoPath, servletPath);
-            
-		} catch (any e){
-			throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
-			writeDump(e);
-			abort;
+	public void function install(){
+
+		if(server.lucee.version >=5){
+
+			try {
+				var destinationPath = getOsgiBundlePath();
+	            var currentPath = getCurrentTemplatePath();
+	            var basePath = getDirectoryFromPath(currentPath);
+	            var sourcePath = basePath & "osgi/plugins/handlebarslucee2_1.0.0.jar";
+	            fileCopy(sourcePath, destinationPath);
+
+			} catch (any e){
+				throw("Error installing OSGI bundle for Handlebars.lucee, the message was #e.message#");
+				writeDump(e);
+				abort;
+			}
+
+		} else {
+
+			try {
+
+				var servletPath = getRhinoServletPath();
+	            var currentPath = getCurrentTemplatePath();
+	            var basePath = getDirectoryFromPath(currentPath);
+	            var rhinoPath = basePath & "java/rhino-1.7R4.jar";
+	            fileCopy(rhinoPath, servletPath);
+
+			} catch (any e){
+				throw("Error installing Rhino library for Handlebars.lucee, the message was #e.message#");
+				writeDump(e);
+				abort;
+			}
 		}
+
 	}
 
 	public void function cacheClear(){
 		if(handlebarsIsCached()){
 			structDelete(application, getCacheKey());
 		}
-	}	
+	}
 
 	public boolean function handlebarsIsCached(){
 		var result = structKeyExists(application, getCacheKey());
@@ -121,7 +163,7 @@ component output="false" displayname="" accessors="true"  {
 	}
 
 	/********************************************************************
-	 * PRIVATE METHODS  
+	 * PRIVATE METHODS
 	 ********************************************************************/
 
 	private string function getHelperPath(){
@@ -139,21 +181,27 @@ component output="false" displayname="" accessors="true"  {
 	private void function cacheHandlebars(required Object Handlebars){
 		application[getCacheKey()] = arguments.handlebars;
 	}
-	
+
 
 	private object function newHandlebars(){
 
-		Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars','java/handlebars-4.0.6.jar,java/commons-lang3-3.1.jar,java/antlr4-runtime-4.5.1-1.jar,java/rhino-1.7R4.jar').init();			
+		if(server.lucee.version >= 5){
+			//Load from an OSGI bundle for Lucee 5.
+			Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars', 'handlebarslucee2', '1.0.0').init();
+		} else {
+			//Load java classes directly
+			Handlebars = createObject('java','com.github.jknack.handlebars.Handlebars','java/handlebars-4.0.3.jar,java/commons-lang3-3.1.jar,java/antlr4-runtime-4.5.1-1.jar,java/rhino-1.7R4.jar').init();
+		}
 
 		var helpers = directoryList(getHelperPath());
 		for(helper in helpers){
 			var jsFile = createObject("java", "java.io.File").init(helper);
-			Handlebars.registerHelpers(jsFile);			
+			Handlebars.registerHelpers(jsFile);
 		}
 
 		if(getUseCache()){
 			cacheHandlebars(Handlebars);
-		}		
+		}
 
 		return Handlebars;
 	}
@@ -161,11 +209,12 @@ component output="false" displayname="" accessors="true"  {
 	private string function getServletContainerPath(){
 
 		var path = expandPath("{lucee-server}");
-
+		// writeDump(path);
+		// abort;
 		if(path CONTAINS ".commandbox"){
 			//Server context is at something like C:\Users\Rory\.CommandBox\engine\cfml\server\lucee-server\context
 			//We need to go 5 directories up to get to the path to copy the rhino jar
-			path = expandPath(path & "../../../../../../lib");
+			path = expandPath(path & "../../../lib");
 		} else if (path CONTAINS "/opt/lucee"){
 			path = "/opt/lucee/lib"; //Linux tomcat location
 		} else {
@@ -180,9 +229,13 @@ component output="false" displayname="" accessors="true"  {
 		return getServletContainerPath() & "/rhino-1.7R4.jar";
 	}
 
+	private string function getOsgiBundlePath(){
+		return expandPath("{lucee-server}../bundles") & "/handlebarslucee2_1.0.0.jar";
+	}
+
 
 	/**********************************************************************
-	 * CUSTOM TAG METHODS 
+	 * CUSTOM TAG METHODS
 	 * onStartTag() and onEndTag are used when handlebars is invoked as a customtag
 	 *********************************************************************/
 
@@ -193,18 +246,14 @@ component output="false" displayname="" accessors="true"  {
 	function onEndTag(attributes, caller, generatedContent){
 
 		template = this.compileInline(generatedContent);
-		
-		if(structKeyExists(attributes,"partial")){
-			savecontent variable="template" {
-				echo('<script id="#attributes.partial#" type="text/x-handlebars-template">');
-				echo(generatedContent);
-				echo('</script>');
-			}
-			htmlhead text="#template#";
-			echo(generatedContent);
-		} else {
-			echo(template(attributes.context));
-		}
-		
+		// var start = getTickCount();
+		// writeDump(template.apply({name:"Rory"}));
+		// writeDump(Handlebars);
+
+		// echo(output);
+		echo(template(attributes.context));
+		// var end = getTickCount();
+		// writeDump((end - start) / 1000);
+		// abort;
 	}
 }
